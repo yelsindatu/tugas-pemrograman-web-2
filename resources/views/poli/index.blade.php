@@ -11,9 +11,21 @@
         Create
     </a>
 
-    <form action="" class="mb-3">
-        <input type="text" name="keyword" class="form-control" placeholder="Cari Poli" value="{{ request('keyword') }}">
+    <form action="" class="col-md-5">
+        <div class="row">
+            <div> <input type="text" name="keyword" class="form-control" placeholder="Cari Poli"
+                    value="{{ request('keyword') }}">
+            </div>
+
+            <div class="col-md-5">
+                <button class="btn btn-primary">
+                    Search
+                </button>
+            </div>
+
+        </div>
     </form>
+
 
     <ul class="list-group">
         @foreach ($polis as $poli)

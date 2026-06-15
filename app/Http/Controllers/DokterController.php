@@ -23,7 +23,7 @@ class DokterController extends Controller
 
         return view('dokter.index', [
             'title' => 'Dokter',
-            'dokters' => $dokters->paginate(2)->withQueryString(),
+            'dokters' => $dokters->paginate(5)->withQueryString(),
             'polis' => Poli::groupBy('nama_poli')
               ->select('id', 'nama_poli')
               ->get()
@@ -40,18 +40,19 @@ class DokterController extends Controller
 
     public function store(Request $request)
     {
-                $validated = $request->validate([
-            'poli_id' => 'required',
-            'nama_dokter' => 'required',
-            'spesialis' => 'required',
-            'no_telepon' => 'required',
-        ]);
+    $validated = $request->validate([
+        'poli_id' => 'required',
+        'nama_dokter' => 'required',
+        'spesialis' => 'required',
+        'no_telepon' => 'required',
+        'tanggal' => 'required|date',
+    ]);
 
-        Dokter::create($validated);
+    Dokter::create($validated);
 
-        return redirect()
-            ->route('dokter.index')
-            ->withSuccess('Data dokter berhasil ditambahkan');
+    return redirect()
+        ->route('dokter.index')
+        ->withSuccess('Data dokter berhasil ditambahkan');
     }
 
     public function show(Dokter $dokter)
@@ -77,11 +78,13 @@ class DokterController extends Controller
             'nama_dokter' => 'required|min:3|max:255',
             'spesialis' => 'required|max:255',
             'no_telepon' => 'required|max:20',
+            'tanggal' => 'required|date',
             'poli_id' => 'required',
         ], [
             'nama_dokter.required' => 'Nama dokter wajib diisi',
             'spesialis.required' => 'Spesialis wajib diisi',
             'no_telepon.required' => 'Nomor telepon wajib diisi',
+            'tanggal.required' => 'Tanggal wajib diisi',
             'poli_id.required' => 'Poli wajib dipilih',
         ]);
 
@@ -94,7 +97,7 @@ class DokterController extends Controller
 
     public function destroy(Dokter $dokter)
     {
-        $dokter->delete($dokter);
+        $dokter->delete();
 
         return redirect()->route('dokter.index')
         ->withSuccess('Data dokter berhasil dihapus');
