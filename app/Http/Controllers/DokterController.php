@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Poli;
 use App\Models\Dokter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DokterController extends Controller
 {
@@ -40,19 +41,36 @@ class DokterController extends Controller
 
     public function store(Request $request)
     {
-    $validated = $request->validate([
-        'poli_id' => 'required',
-        'nama_dokter' => 'required',
-        'spesialis' => 'required',
-        'no_telepon' => 'required',
-        'tanggal' => 'required|date',
-    ]);
+        $validated = $request->validate([
+            'poli_id' => 'required',
+            'nama_dokter' => 'required',
+            'spesialis' => 'required',
+            'no_telepon' => 'required',
+            'tanggal' => 'required|date',
+        ], [
+            'poli_id.required' => 'Poli wajib dipilih',
+            'nama_dokter.required' => 'Nama dokter wajib diisi',
+            'spesialis.required' => 'Spesialis wajib diisi',
+            'no_telepon.required' => 'Nomor telepon wajib diisi',
+            'tanggal.required' => 'Tanggal wajib diisi',
+        ]);
 
-    Dokter::create($validated);
+        try {
+            DB::beginTransaction();
 
-    return redirect()
-        ->route('dokter.index')
-        ->withSuccess('Data dokter berhasil ditambahkan');
+            Dokter::create($validated);
+
+            DB::commit();
+
+            return to_route('dokter.index')
+                ->withSuccess('Data dokter berhasil ditambahkan');
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            return to_route('dokter.create')
+                ->withError('Data dokter gagal ditambahkan');
+        }
     }
 
     public function show(Dokter $dokter)

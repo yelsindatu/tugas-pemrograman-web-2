@@ -58,6 +58,18 @@
             @enderror
         </div>
 
+        <div class="mb-3">
+            <label class="form-label">Tanggal</label>
+            <input type="date" name="tanggal" class="form-control @error('tanggal') is-invalid @enderror"
+                value="{{ old('tanggal') }}">
+
+            @error('tanggal')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
+        </div>
+
         <a href="{{ route('dokter.index') }}" class="btn btn-secondary">
             Cancel
         </a>
