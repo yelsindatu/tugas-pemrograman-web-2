@@ -131,4 +131,12 @@ class DokterController extends Controller
         return redirect()->route('dokter.index')
         ->withSuccess('Data dokter berhasil dihapus');
     }
+
+    public function trash()
+    {
+        return view('dokter.trash', [
+            'title' => 'Trash Dokter',
+            'dokters' => Dokter::onlyTrashed()->with('poli')->get(),
+        ]);
+    }
 }

@@ -29,6 +29,10 @@
                     dokter
                 </a>
 
+                <a class="nav-link" href="{{ route('dokter.trash') }}">
+                    Trash
+                </a>
+
 
             </div>
         </div>
