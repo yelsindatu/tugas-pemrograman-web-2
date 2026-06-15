@@ -27,11 +27,17 @@
 
                     <button type="submit" class="btn btn-warning btn-sm"
                         onclick="return confirm('Anda yakin ingin mengembalikan data?')">
-
                         Restore
-
                     </button>
+                </form>
+                <form action="{{ route('dokter.forceDelete', $dokter) }}" method="POST" class="d-inline">
+                    @csrf
+                    @method('DELETE')
 
+                    <button type="submit" class="btn btn-danger btn-sm"
+                        onclick="return confirm('Data akan dihapus permanen. Lanjutkan?')">
+                        Force Delete
+                    </button>
                 </form>
 
             </li>

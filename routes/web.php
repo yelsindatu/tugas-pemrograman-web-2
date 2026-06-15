@@ -10,6 +10,9 @@ Route::get('/dokter/trash', [DokterController::class, 'trash'])
     ->name('dokter.trash');
 Route::put('/dokter/{id}/restore', [DokterController::class, 'restore'])
     ->name('dokter.restore');
+Route::delete('/dokter/{dokter}/force-delete',[DokterController::class, 'forceDelete'])
+    ->name('dokter.forceDelete')
+    ->withTrashed();
 Route::resource('/poli', PoliController::class);
 Route::resource('/pasien', PasienController::class);
 Route::resource('/dokter', DokterController::class);

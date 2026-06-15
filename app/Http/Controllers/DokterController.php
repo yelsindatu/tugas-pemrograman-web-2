@@ -149,4 +149,12 @@ class DokterController extends Controller
         return to_route('dokter.trash')
             ->withSuccess('Data dokter berhasil dikembalikan');
     }
+
+    public function forceDelete(Dokter $dokter)
+    {
+        $dokter->forceDelete();
+
+        return to_route('dokter.trash')
+            ->withSuccess('Data dokter berhasil dihapus permanen');
+    }
 }
