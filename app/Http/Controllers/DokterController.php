@@ -139,4 +139,14 @@ class DokterController extends Controller
             'dokters' => Dokter::onlyTrashed()->with('poli')->get(),
         ]);
     }
+
+    public function restore($id)
+    {
+        $dokter = Dokter::onlyTrashed()->findOrFail($id);
+
+        $dokter->restore();
+
+        return to_route('dokter.trash')
+            ->withSuccess('Data dokter berhasil dikembalikan');
+    }
 }
