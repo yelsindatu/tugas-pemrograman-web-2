@@ -96,21 +96,32 @@ class DokterController extends Controller
             'nama_dokter' => 'required|min:3|max:255',
             'spesialis' => 'required|max:255',
             'no_telepon' => 'required|max:20',
-            'tanggal' => 'required|date',
             'poli_id' => 'required',
+            'tanggal' => 'required|date',
         ], [
             'nama_dokter.required' => 'Nama dokter wajib diisi',
             'spesialis.required' => 'Spesialis wajib diisi',
             'no_telepon.required' => 'Nomor telepon wajib diisi',
-            'tanggal.required' => 'Tanggal wajib diisi',
             'poli_id.required' => 'Poli wajib dipilih',
+            'tanggal.required' => 'Tanggal wajib diisi',
         ]);
 
-        $dokter->update($validated);
+        try {
+            DB::beginTransaction();
 
-        return redirect()
-            ->route('dokter.index')
-            ->withSuccess('Data dokter berhasil diubah');
+            $dokter->update($validated);
+
+            DB::commit();
+
+            return to_route('dokter.index')
+                ->withSuccess('Data dokter berhasil diubah');
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            return to_route('dokter.edit', $dokter)
+                ->withError('Data dokter gagal diubah');
+        }
     }
 
     public function destroy(Dokter $dokter)
